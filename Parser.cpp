@@ -380,18 +380,18 @@ void Parser::closeFiles() {
 }
 
 void Parser::Rat15su() {
+	//cout << "<Rat15su> ::= $$ <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$" << endl;
+
 	currentPair = getTokenLexemePair();
 
 	if (currentPair.lexeme != "$$") {
-		perror("First $$ marker expected");
-		exit(1);
+		perror("First $$ marker expected; Rat15su()");
 	}
 
 	currentPair = getTokenLexemePair();
 
 	if ((currentPair.lexeme != "function") && (currentPair.lexeme != "$$")) {
-		perror("function lexeme or $$ marker expected");
-		exit(1);
+		perror("function lexeme or $$ marker expected; Rat15su()");
 	}
 
 	while (currentPair.lexeme == "function") {
@@ -399,8 +399,7 @@ void Parser::Rat15su() {
 	}
 
 	if (currentPair.lexeme != "$$") {
-		perror("Second $$ marker expected");
-		exit(1);
+		perror("Second $$ marker expected; Rat15su()");
 	}
 
 	currentPair = getTokenLexemePair();
@@ -409,8 +408,7 @@ void Parser::Rat15su() {
 	StmtList();
 
 	if (currentPair.lexeme != "$$") {
-		perror("Last $$ marker expected");
-		exit(1);
+		perror("Last $$ marker expected; Rat15su()");
 	}
 }
 
@@ -436,20 +434,16 @@ void Parser::Func() {
 					}
 					Body();
 				} else {
-					perror(") lexeme expected");
-					exit(1);
+					perror(") lexeme expected; Func()");
 				}
 			} else {
-				perror("( lexeme expected");
-				exit(1);
+				perror("( lexeme expected; Func()");
 			}
 		} else {
-			perror("identifier token expected");
-			exit(1);
+			perror("identifier token expected; Func()");
 		}
 	} else {
-		perror("function lexeme expected");
-		exit(1);
+		perror("function lexeme expected; Func()");
 	}
 }
 
@@ -468,8 +462,7 @@ void Parser::Param() {
 	if (currentPair.token == "identifier") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror("identifier token expected");
-		exit(1);
+		perror("identifier token expected; Param()");
 	}
 }
 
@@ -484,8 +477,7 @@ void Parser::DeclList() {
 			currentPair = getTokenLexemePair();
 		}
 		else {
-			perror("; lexeme expected");
-			exit(1);
+			perror("; lexeme expected; DeclList()");
 		}
 	} while (currentPair.lexeme == "integer" || currentPair.lexeme == "boolean" || currentPair.lexeme == "real");
 }
@@ -499,8 +491,7 @@ void Parser::Qualifier() {
 	if (currentPair.lexeme == "integer" || currentPair.lexeme == "boolean" || currentPair.lexeme == "real") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror("integer, boolean, or real lexeme expected");
-		exit(1);
+		perror("integer, boolean, or real lexeme expected; Qualifier()");
 	}
 }
 
@@ -513,8 +504,7 @@ void Parser::IDs() {
 			currentPair = getTokenLexemePair();
 		}
 		else {
-			perror("identifier token expected");
-			exit(1);
+			perror("identifier token expected; IDs()");
 		}
 	} while (currentPair.lexeme == ",");
 }
@@ -523,8 +513,7 @@ void Parser::Body() {
 	if (currentPair.lexeme == "{") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror("{ lexeme expected");
-		exit(1);
+		perror("{ lexeme expected; Body()");
 	}
 
 	StmtList();
@@ -532,8 +521,7 @@ void Parser::Body() {
 	if (currentPair.lexeme == "}") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror("} lexeme expected");
-		exit(1);
+		perror("} lexeme expected; Body()");
 	}
 }
 
@@ -560,8 +548,7 @@ void Parser::Stmt() {
 		While();
 	} else {
 		cout << currentPair.token << " " << currentPair.lexeme << endl;
-		perror("{, identifier, if, return, write, read, or while lexeme expected");
-		exit(1);
+		perror("{, identifier, if, return, write, read, or while lexeme expected; Stmt()");
 	}
 }
 
@@ -569,8 +556,7 @@ void Parser::Compound() {
 	if (currentPair.lexeme == "{") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror("{ lexeme expected");
-		exit(1);
+		perror("{ lexeme expected; Compound()");
 	}
 
 	StmtList();
@@ -578,8 +564,7 @@ void Parser::Compound() {
 	if (currentPair.lexeme == "}") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror("} lexeme expected");
-		exit(1);
+		perror("} lexeme expected; Compound()");
 	}
 }
 
@@ -587,15 +572,13 @@ void Parser::Assign() {
 	if (currentPair.token == "identifier") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror("identifier token expected");
-		exit(1);
+		perror("identifier token expected; Assign()");
 	}
 
 	if (currentPair.lexeme == "=") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror("= lexeme expected");
-		exit(1);
+		perror("= lexeme expected; Assign()");
 	}
 
 	Expr();
@@ -604,8 +587,7 @@ void Parser::Assign() {
 		currentPair = getTokenLexemePair();
 	}
 	else {
-		perror("; lexeme expected");
-		exit(1);
+		perror("; lexeme expected; Assign()");
 	}
 }
 
@@ -613,15 +595,13 @@ void Parser::If() {
 	if (currentPair.lexeme == "if") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror("if lexeme expected");
-		exit(1);
+		perror("if lexeme expected; If()");
 	}
 
 	if (currentPair.lexeme == "(") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror("( lexeme expected");
-		exit(1);
+		perror("( lexeme expected; If()");
 	}
 
 	Cond();
@@ -629,8 +609,7 @@ void Parser::If() {
 	if (currentPair.lexeme == ")") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror(") lexeme expected");
-		exit(1);
+		perror(") lexeme expected; If()");
 	}
 
 	Stmt();
@@ -640,14 +619,12 @@ void Parser::If() {
 		if (currentPair.lexeme == "fi") {
 			currentPair = getTokenLexemePair();
 		} else {
-			perror("fi lexeme expected");
-			exit(1);
+			perror("fi lexeme expected; If()");
 		}
 	} else if (currentPair.lexeme == "fi") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror("else or fi lexeme expected");
-		exit(1);
+		perror("else or fi lexeme expected; If()");
 	}
 }
 
@@ -658,12 +635,10 @@ void Parser::Return() {
 		if (currentPair.lexeme == ";") {
 			currentPair = getTokenLexemePair();
 		} else {
-			perror("; lexeme expected");
-			exit(1);
+			perror("; lexeme expected; Return()");
 		}
 	} else {
-		perror("return lexeme expected");
-		exit(1);
+		perror("return lexeme expected; Return()");
 	}
 }
 
@@ -678,20 +653,16 @@ void Parser::Write() {
 				if (currentPair.lexeme == ";") {
 					currentPair = getTokenLexemePair();
 				} else {
-					perror("; lexeme expected");
-					exit(1);
+					perror("; lexeme expected; Write()");
 				}
 			} else {
-				perror(") lexeme expected");
-				exit(1);
+				perror(") lexeme expected; Write()");
 			}
 		} else {
-			perror("( lexeme expected");
-			exit(1);
+			perror("( lexeme expected; Write()");
 		}
 	} else {
-		perror("write lexeme expected");
-		exit(1);
+		perror("write lexeme expected; Write()");
 	}
 }
 
@@ -706,20 +677,16 @@ void Parser::Read() {
 				if (currentPair.lexeme == ";") {
 					currentPair = getTokenLexemePair();
 				} else {
-					perror("; lexeme expected");
-					exit(1);
+					perror("; lexeme expected; Read()");
 				}
 			} else {
-				perror(") lexeme expected");
-				exit(1);
+				perror(") lexeme expected; Read()");
 			}
 		} else {
-			perror("( lexeme expected");
-			exit(1);
+			perror("( lexeme expected; Read()");
 		}
 	} else {
-		perror("read lexeme expected");
-		exit(1);
+		perror("read lexeme expected; Read()");
 	}
 }
 
@@ -733,16 +700,13 @@ void Parser::While() {
 				currentPair = getTokenLexemePair();
 				Stmt();
 			} else {
-				perror(") lexeme expected");
-				exit(1);
+				perror(") lexeme expected; While()");
 			}
 		} else {
-			perror("( lexeme expected");
-			exit(1);
+			perror("( lexeme expected; While()");
 		}
 	} else {
-		perror("while lexeme expected");
-		exit(1);
+		perror("while lexeme expected; While()");
 	}
 }
 
@@ -756,8 +720,7 @@ void Parser::Relop() {
 	if (currentPair.lexeme == "==" || currentPair.lexeme == "!=" || currentPair.lexeme == ">" || currentPair.lexeme == "<") {
 		currentPair = getTokenLexemePair();
 	} else {
-		perror("==, !=, >, or < lexeme expected");
-		exit(1);
+		perror("==, !=, >, or < lexeme expected; Relop()");
 	}
 }
 
@@ -772,8 +735,7 @@ void Parser::ExprPrime() { // removed else statement bc this production can be e
 		Term();
 		ExprPrime();
 	} /*else {
-		perror("+ or - lexeme expected");
-		exit(1);
+		perror("+ or - lexeme expected; ExprPrime()");
 	}*/
 }
 
@@ -788,8 +750,7 @@ void Parser::TermPrime() { // removed else statement bc this production can be e
 		Factor();
 		TermPrime();
 	} /*else {
-		perror("* or / lexeme expected");
-		exit(1);
+		perror("* or / lexeme expected; TermPrime()");
 	}*/
 }
 
@@ -810,8 +771,7 @@ void Parser::Primary() {
 				currentPair = getTokenLexemePair();
 			}
 			else {
-				perror(") lexeme expected");
-				exit(1);
+				perror(") lexeme expected; Primary()");
 			}
 		}
 	} else if (currentPair.token == "integer" || currentPair.token == "real" || currentPair.lexeme == "true" || currentPair.lexeme == "false") {
@@ -822,11 +782,9 @@ void Parser::Primary() {
 		if (currentPair.lexeme == ")") {
 			currentPair = getTokenLexemePair();
 		} else {
-			perror(") lexeme expected");
-			exit(1);
+			perror(") lexeme expected; Primary()");
 		}
 	} else {
-		perror("identifier, real, or integer token or (, true, or false lexeme expected");
-		exit(1);
+		perror("identifier, real, or integer token or (, true, or false lexeme expected; Primary()");
 	}
 }
