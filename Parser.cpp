@@ -353,7 +353,6 @@ bool Parser::isKeyword(string input) {
 		input == "function"
 		|| input == "return"
 		|| input == "integer"
-		|| input == "int"
 		|| input == "real"
 		|| input == "boolean"
 		|| input == "if"
@@ -399,7 +398,7 @@ void Parser::Rat15su() {
 			OptFuncDef();
 	}
 
-	if (currentPair.token != "$$") {
+	if (currentPair.lexeme != "$$") {
 		perror("Second $$ marker expected");
 		exit(1);
 	}
@@ -409,7 +408,7 @@ void Parser::Rat15su() {
 	OptDeclList();
 	StmtList();
 
-	if (currentPair.token != "$$") {
+	if (currentPair.lexeme != "$$") {
 		perror("Last $$ marker expected");
 		exit(1);
 	}
@@ -539,7 +538,7 @@ void Parser::Body() {
 }
 
 void Parser::StmtList() {
-	while (currentPair.lexeme != "}") {
+	while (currentPair.lexeme != "}" && currentPair.lexeme != "$$") {
 		Stmt();
 	}
 }
@@ -560,6 +559,7 @@ void Parser::Stmt() {
 	} else if (currentPair.lexeme == "while") {
 		While();
 	} else {
+		cout << currentPair.token << " " << currentPair.lexeme << endl;
 		perror("{, identifier, if, return, write, read, or while lexeme expected");
 		exit(1);
 	}
@@ -654,7 +654,7 @@ void Parser::If() {
 void Parser::Return() {
 	if (currentPair.lexeme == "return") {
 		currentPair = getTokenLexemePair();
-		Expr;
+		Expr();
 		if (currentPair.lexeme == ";") {
 			currentPair = getTokenLexemePair();
 		} else {
@@ -671,8 +671,8 @@ void Parser::Write() {
 	if (currentPair.lexeme == "write") {
 		currentPair = getTokenLexemePair();
 		if (currentPair.lexeme == "(") {
-			currentPair = getTokenLexemePair(); //
-			Expr;
+			currentPair = getTokenLexemePair();
+			Expr();
 			if (currentPair.lexeme == ")") {
 				currentPair = getTokenLexemePair();
 				if (currentPair.lexeme == ";") {
@@ -700,7 +700,7 @@ void Parser::Read() {
 		currentPair = getTokenLexemePair();
 		if (currentPair.lexeme == "(") {
 			currentPair = getTokenLexemePair();
-			IDs;
+			IDs();
 			if (currentPair.lexeme == ")") {
 				currentPair = getTokenLexemePair();
 				if (currentPair.lexeme == ";") {
@@ -729,7 +729,8 @@ void Parser::While() {
 		if (currentPair.lexeme == "(") {
 			currentPair = getTokenLexemePair();
 			Cond();
-			if (currentPair.lexeme == ")") { //
+			if (currentPair.lexeme == ")") {
+				currentPair = getTokenLexemePair();
 				Stmt();
 			} else {
 				perror(") lexeme expected");
@@ -765,14 +766,15 @@ void Parser::Expr() {
 	ExprPrime();
 }
 
-void Parser::ExprPrime() { // when to stop? loop?
+void Parser::ExprPrime() { // removed else statement bc this production can be empty
 	if (currentPair.lexeme == "+" || currentPair.lexeme == "-") {
+		currentPair = getTokenLexemePair();
 		Term();
 		ExprPrime();
-	} else {
+	} /*else {
 		perror("+ or - lexeme expected");
 		exit(1);
-	}
+	}*/
 }
 
 void Parser::Term() {
@@ -780,14 +782,15 @@ void Parser::Term() {
 	TermPrime();
 }
 
-void Parser::TermPrime() { // when to stop? loop?
+void Parser::TermPrime() { // removed else statement bc this production can be empty
 	if (currentPair.lexeme == "*" || currentPair.lexeme == "/") {
+		currentPair = getTokenLexemePair();
 		Factor();
 		TermPrime();
-	} else {
+	} /*else {
 		perror("* or / lexeme expected");
 		exit(1);
-	}
+	}*/
 }
 
 void Parser::Factor() {
@@ -798,19 +801,32 @@ void Parser::Factor() {
 }
 
 void Parser::Primary() {
-	if (currentPair.lexeme == "identifier") {
-
+	if (currentPair.token == "identifier") {
+		currentPair = getTokenLexemePair();
+		if (currentPair.lexeme == "(") {
+			currentPair = getTokenLexemePair();
+			IDs();
+			if (currentPair.lexeme == ")") {
+				currentPair = getTokenLexemePair();
+			}
+			else {
+				perror(") lexeme expected");
+				exit(1);
+			}
+		}
+	} else if (currentPair.token == "integer" || currentPair.token == "real" || currentPair.lexeme == "true" || currentPair.lexeme == "false") {
+		currentPair = getTokenLexemePair();
 	} else if (currentPair.lexeme == "(") {
-		// read in?
+		currentPair = getTokenLexemePair();
 		Expr();
 		if (currentPair.lexeme == ")") {
-			currentPair = getTokenLexemePair(); //?
+			currentPair = getTokenLexemePair();
 		} else {
 			perror(") lexeme expected");
 			exit(1);
 		}
 	} else {
-		perror("identifier lexeme or ( lexeme expected");
+		perror("identifier, real, or integer token or (, true, or false lexeme expected");
 		exit(1);
 	}
 }
