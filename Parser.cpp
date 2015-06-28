@@ -9,7 +9,7 @@ Parser::Parser(string file_name) {
 	inFile.open(file_name.c_str());
 
 	if (!inFile.is_open()){
-		cout << "Error: File won't open." << endl;
+		outFile << "Error: File won't open." << endl;
 	}
 
 	outFile.open("out.txt");
@@ -382,16 +382,16 @@ void Parser::closeFiles() {
 void Parser::Rat15su() {
 	currentPair = getTokenLexemePair();
 
-	cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-	cout << "<Rat15su> ::= $$ <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$" << endl << endl;
+	outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+	outFile << "<Rat15su> ::= $$ <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$" << endl << endl;
 	if (currentPair.lexeme != "$$") {
 		perror("First $$ marker expected; Rat15su()");
 	}
 
 	currentPair = getTokenLexemePair();
 
-	cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-	cout << "<Rat15su> ::= $$ <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$" << endl << endl;
+	outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+	outFile << "<Rat15su> ::= $$ <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$" << endl << endl;
 	if ((currentPair.lexeme != "function") && (currentPair.lexeme != "$$")) {
 		perror("function lexeme or $$ marker expected; Rat15su()");
 	}
@@ -406,8 +406,8 @@ void Parser::Rat15su() {
 
 	currentPair = getTokenLexemePair();
 
-	cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-	cout << "<Rat15su> ::= $$ <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$" << endl << endl;
+	outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+	outFile << "<Rat15su> ::= $$ <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$" << endl << endl;
 
 	OptDeclList();
 	StmtList();
@@ -428,25 +428,25 @@ void Parser::Func() {
 	if (currentPair.lexeme == "function") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Function> ::= function <Identifier> (<Opt Parameters>) <Opt Declaration List> <Body>" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Function> ::= function <Identifier> (<Opt Parameters>) <Opt Declaration List> <Body>" << endl << endl;
 		if (currentPair.token == "identifier") {
 			currentPair = getTokenLexemePair();
 
-			cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-			cout << "<Function> ::= function <Identifier> (<Opt Parameters>) <Opt Declaration List> <Body>" << endl << endl;
+			outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+			outFile << "<Function> ::= function <Identifier> (<Opt Parameters>) <Opt Declaration List> <Body>" << endl << endl;
 			if (currentPair.lexeme == "(") {
 				currentPair = getTokenLexemePair();
 
-				cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-				cout << "<Function> ::= function <Identifier> (<Opt Parameters>) <Opt Declaration List> <Body>" << endl << endl;
+				outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+				outFile << "<Function> ::= function <Identifier> (<Opt Parameters>) <Opt Declaration List> <Body>" << endl << endl;
 
 				OptParams();
 				if (currentPair.lexeme == ")") {
 					currentPair = getTokenLexemePair();
 
-					cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-					cout << "<Function> ::= function <Identifier> (<Opt Parameters>) <Opt Declaration List> <Body>" << endl << endl;
+					outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+					outFile << "<Function> ::= function <Identifier> (<Opt Parameters>) <Opt Declaration List> <Body>" << endl << endl;
 
 					if (currentPair.lexeme != "{") {
 						OptDeclList();
@@ -481,8 +481,8 @@ void Parser::Param() {
 	if (currentPair.token == "identifier") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Parameter> ::= <Qualifier> <Identifier>" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Parameter> ::= <Qualifier> <Identifier>" << endl << endl;
 	} else {
 		perror("identifier token expected; Param()");
 	}
@@ -498,8 +498,8 @@ void Parser::DeclList() {
 		if (currentPair.lexeme == ";") {
 			currentPair = getTokenLexemePair();
 
-			cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-			cout << "<Declaration List> ::= <Declaration>; | <Declaration>; <Declaration List>" << endl << endl;
+			outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+			outFile << "<Declaration List> ::= <Declaration>; | <Declaration>; <Declaration List>" << endl << endl;
 		}
 		else {
 			perror("; lexeme expected; DeclList()");
@@ -516,18 +516,18 @@ void Parser::Qualifier() {
 	if (currentPair.lexeme == "integer") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Qualifier> ::= integer" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Qualifier> ::= integer" << endl << endl;
 	} else if (currentPair.lexeme == "boolean") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Qualifier> ::= boolean" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Qualifier> ::= boolean" << endl << endl;
 	} else if (currentPair.lexeme == "real") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Qualifier> ::= real" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Qualifier> ::= real" << endl << endl;
 	} else {
 		perror("integer, boolean, or real lexeme expected; Qualifier()");
 	}
@@ -538,14 +538,14 @@ void Parser::IDs() {
 		if (currentPair.lexeme == ",") {
 			currentPair = getTokenLexemePair();
 
-			cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-			cout << "<IDs> ::= <Identifier>, <IDs>" << endl << endl;
+			outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+			outFile << "<IDs> ::= <Identifier>, <IDs>" << endl << endl;
 		}
 		if (currentPair.token == "identifier") {
 			currentPair = getTokenLexemePair();
 
-			cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-			cout << "<IDs> ::= <Identifier>" << endl << endl;
+			outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+			outFile << "<IDs> ::= <Identifier>" << endl << endl;
 		}
 		else {
 			perror("identifier token expected; IDs()");
@@ -557,8 +557,8 @@ void Parser::Body() {
 	if (currentPair.lexeme == "{") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Body> ::= { <Statement List> }" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Body> ::= { <Statement List> }" << endl << endl;
 	} else {
 		perror("{ lexeme expected; Body()");
 	}
@@ -568,8 +568,8 @@ void Parser::Body() {
 	if (currentPair.lexeme == "}") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Body> ::= { <Statement List> }" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Body> ::= { <Statement List> }" << endl << endl;
 	} else {
 		perror("} lexeme expected; Body()");
 	}
@@ -597,7 +597,7 @@ void Parser::Stmt() {
 	} else if (currentPair.lexeme == "while") {
 		While();
 	} else {
-		cout << currentPair.token << " " << currentPair.lexeme << endl;
+		outFile << currentPair.token << " " << currentPair.lexeme << endl;
 		perror("{, identifier, if, return, write, read, or while lexeme expected; Stmt()");
 	}
 }
@@ -606,8 +606,8 @@ void Parser::Compound() {
 	if (currentPair.lexeme == "{") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Compound> ::= { <Statement List> }" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Compound> ::= { <Statement List> }" << endl << endl;
 	} else {
 		perror("{ lexeme expected; Compound()");
 	}
@@ -617,8 +617,8 @@ void Parser::Compound() {
 	if (currentPair.lexeme == "}") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Compound> ::= { <Statement List> }" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Compound> ::= { <Statement List> }" << endl << endl;
 	} else {
 		perror("} lexeme expected; Compound()");
 	}
@@ -628,8 +628,8 @@ void Parser::Assign() {
 	if (currentPair.token == "identifier") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Assign> ::= <Identifier> = <Expression>;" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Assign> ::= <Identifier> = <Expression>;" << endl << endl;
 	} else {
 		perror("identifier token expected; Assign()");
 	}
@@ -637,8 +637,8 @@ void Parser::Assign() {
 	if (currentPair.lexeme == "=") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Assign> ::= <Identifier> = <Expression>;" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Assign> ::= <Identifier> = <Expression>;" << endl << endl;
 	} else {
 		perror("= lexeme expected; Assign()");
 	}
@@ -648,8 +648,8 @@ void Parser::Assign() {
 	if (currentPair.lexeme == ";") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Assign> ::= <Identifier> = <Expression>;" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Assign> ::= <Identifier> = <Expression>;" << endl << endl;
 	}
 	else {
 		perror("; lexeme expected; Assign()");
@@ -660,8 +660,8 @@ void Parser::If() {
 	if (currentPair.lexeme == "if") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<If> ::= if (<Condition>) <Statement> fi | if (<Condition>) <Statement> else <Statement> fi" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<If> ::= if (<Condition>) <Statement> fi | if (<Condition>) <Statement> else <Statement> fi" << endl << endl;
 	} else {
 		perror("if lexeme expected; If()");
 	}
@@ -669,8 +669,8 @@ void Parser::If() {
 	if (currentPair.lexeme == "(") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<If> ::= if (<Condition>) <Statement> fi | if (<Condition>) <Statement> else <Statement> fi" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<If> ::= if (<Condition>) <Statement> fi | if (<Condition>) <Statement> else <Statement> fi" << endl << endl;
 	} else {
 		perror("( lexeme expected; If()");
 	}
@@ -680,8 +680,8 @@ void Parser::If() {
 	if (currentPair.lexeme == ")") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<If> ::= if (<Condition>) <Statement> fi | if (<Condition>) <Statement> else <Statement> fi" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<If> ::= if (<Condition>) <Statement> fi | if (<Condition>) <Statement> else <Statement> fi" << endl << endl;
 	} else {
 		perror(") lexeme expected; If()");
 	}
@@ -693,16 +693,16 @@ void Parser::If() {
 		if (currentPair.lexeme == "fi") {
 			currentPair = getTokenLexemePair();
 
-			cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-			cout << "<If> ::= if (<Condition>) <Statement> else <Statement> fi" << endl << endl;
+			outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+			outFile << "<If> ::= if (<Condition>) <Statement> else <Statement> fi" << endl << endl;
 		} else {
 			perror("fi lexeme expected; If()");
 		}
 	} else if (currentPair.lexeme == "fi") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<If> ::= if (<Condition>) <Statement> else <Statement> fi" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<If> ::= if (<Condition>) <Statement> else <Statement> fi" << endl << endl;
 	} else {
 		perror("else or fi lexeme expected; If()");
 	}
@@ -712,15 +712,15 @@ void Parser::Return() {
 	if (currentPair.lexeme == "return") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Return> ::= return <Expression>;" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Return> ::= return <Expression>;" << endl << endl;
 
 		Expr();
 		if (currentPair.lexeme == ";") {
 			currentPair = getTokenLexemePair();
 
-			cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-			cout << "<Return> ::= return <Expression>;" << endl << endl;
+			outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+			outFile << "<Return> ::= return <Expression>;" << endl << endl;
 		} else {
 			perror("; lexeme expected; Return()");
 		}
@@ -733,26 +733,26 @@ void Parser::Write() {
 	if (currentPair.lexeme == "write") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Write> ::= write(<Expression>);" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Write> ::= write(<Expression>);" << endl << endl;
 		if (currentPair.lexeme == "(") {
 			currentPair = getTokenLexemePair();
 
-			cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-			cout << "<Write> ::= write(<Expression>);" << endl << endl;
+			outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+			outFile << "<Write> ::= write(<Expression>);" << endl << endl;
 
 			Expr();
 			if (currentPair.lexeme == ")") {
 				currentPair = getTokenLexemePair();
 
-				cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-				cout << "<Write> ::= write(<Expression>);" << endl << endl;
+				outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+				outFile << "<Write> ::= write(<Expression>);" << endl << endl;
 
 				if (currentPair.lexeme == ";") {
 					currentPair = getTokenLexemePair();
 
-					cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-					cout << "<Write> ::= write(<Expression>);" << endl << endl;
+					outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+					outFile << "<Write> ::= write(<Expression>);" << endl << endl;
 				} else {
 					perror("; lexeme expected; Write()");
 				}
@@ -771,25 +771,25 @@ void Parser::Read() {
 	if (currentPair.lexeme == "read") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Read> ::= read(<IDs>);" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Read> ::= read(<IDs>);" << endl << endl;
 		if (currentPair.lexeme == "(") {
 			currentPair = getTokenLexemePair();
 
-			cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-			cout << "<Read> ::= read(<IDs>);" << endl << endl;
+			outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+			outFile << "<Read> ::= read(<IDs>);" << endl << endl;
 
 			IDs();
 			if (currentPair.lexeme == ")") {
 				currentPair = getTokenLexemePair();
 
-				cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-				cout << "<Read> ::= read(<IDs>);" << endl << endl;
+				outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+				outFile << "<Read> ::= read(<IDs>);" << endl << endl;
 				if (currentPair.lexeme == ";") {
 					currentPair = getTokenLexemePair();
 
-					cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-					cout << "<Read> ::= read(<IDs>);" << endl << endl;
+					outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+					outFile << "<Read> ::= read(<IDs>);" << endl << endl;
 				} else {
 					perror("; lexeme expected; Read()");
 				}
@@ -808,20 +808,20 @@ void Parser::While() {
 	if (currentPair.lexeme == "while") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<While> ::= while(<Condition>) <Statement>" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<While> ::= while(<Condition>) <Statement>" << endl << endl;
 		if (currentPair.lexeme == "(") {
 			currentPair = getTokenLexemePair();
 
-			cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-			cout << "<While> ::= while(<Condition>) <Statement>" << endl << endl;
+			outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+			outFile << "<While> ::= while(<Condition>) <Statement>" << endl << endl;
 
 			Cond();
 			if (currentPair.lexeme == ")") {
 				currentPair = getTokenLexemePair();
 
-				cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-				cout << "<While> ::= while(<Condition>) <Statement>" << endl << endl;
+				outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+				outFile << "<While> ::= while(<Condition>) <Statement>" << endl << endl;
 
 				Stmt();
 			} else {
@@ -845,23 +845,23 @@ void Parser::Relop() {
 	if (currentPair.lexeme == "==") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Relop> ::= ==" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Relop> ::= ==" << endl << endl;
 	} else if (currentPair.lexeme == "!=") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Relop> ::= !=" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Relop> ::= !=" << endl << endl;
 	} else if (currentPair.lexeme == ">") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Relop> ::= >" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Relop> ::= >" << endl << endl;
 	} else if (currentPair.lexeme == "<") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Relop> ::= <" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Relop> ::= <" << endl << endl;
 	} else {
 		perror("==, !=, >, or < lexeme expected; Relop()");
 	}
@@ -876,16 +876,16 @@ void Parser::ExprPrime() { // removed else statement bc this production can be e
 	if (currentPair.lexeme == "+") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Expression Prime> ::= + <Term> <Expression Prime> | <Empty>" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Expression Prime> ::= + <Term> <Expression Prime> | <Empty>" << endl << endl;
 
 		Term();
 		ExprPrime();
 	} else if (currentPair.lexeme == "-") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Expression Prime> ::= - <Term> <Expression Prime> | <Empty>" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Expression Prime> ::= - <Term> <Expression Prime> | <Empty>" << endl << endl;
 
 		Term();
 		ExprPrime();
@@ -904,16 +904,16 @@ void Parser::TermPrime() { // removed else statement bc this production can be e
 	if (currentPair.lexeme == "*") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Term Prime> ::= * <Factor> <Term Prime> | <Empty>" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Term Prime> ::= * <Factor> <Term Prime> | <Empty>" << endl << endl;
 
 		Factor();
 		TermPrime();
 	} else if (currentPair.lexeme == "/") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Term Prime> ::= / <Factor> <Term Prime> | <Empty>" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Term Prime> ::= / <Factor> <Term Prime> | <Empty>" << endl << endl;
 
 		Factor();
 		TermPrime();
@@ -927,8 +927,8 @@ void Parser::Factor() {
 	if (currentPair.lexeme == "-") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Factor> ::= - <Primary> | <Primary>" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Factor> ::= - <Primary> | <Primary>" << endl << endl;
 	}
 	Primary();
 }
@@ -937,20 +937,20 @@ void Parser::Primary() {
 	if (currentPair.token == "identifier") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Primary> ::= <Identifier>" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Primary> ::= <Identifier>" << endl << endl;
 		if (currentPair.lexeme == "(") {
 			currentPair = getTokenLexemePair();
 
-			cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-			cout << "<Primary> ::= <Identifier> (<IDs>)" << endl << endl;
+			outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+			outFile << "<Primary> ::= <Identifier> (<IDs>)" << endl << endl;
 
 			IDs();
 			if (currentPair.lexeme == ")") {
 				currentPair = getTokenLexemePair();
 
-				cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-				cout << "<Primary> ::= <Identifier> (<IDs>)" << endl << endl;
+				outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+				outFile << "<Primary> ::= <Identifier> (<IDs>)" << endl << endl;
 			}
 			else {
 				perror(") lexeme expected; Primary()");
@@ -959,35 +959,35 @@ void Parser::Primary() {
 	} else if (currentPair.token == "integer") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Primary> ::= <Integer>" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Primary> ::= <Integer>" << endl << endl;
 	} else if (currentPair.token == "real") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Primary> ::= <Real>" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Primary> ::= <Real>" << endl << endl;
 	} else if (currentPair.lexeme == "true") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Primary> ::= true" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Primary> ::= true" << endl << endl;
 	} else if (currentPair.lexeme == "false") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Primary> ::= false" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Primary> ::= false" << endl << endl;
 	} else if (currentPair.lexeme == "(") {
 		currentPair = getTokenLexemePair();
 
-		cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		cout << "<Primary> ::= (<Expression>)" << endl << endl;
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Primary> ::= (<Expression>)" << endl << endl;
 
 		Expr();
 		if (currentPair.lexeme == ")") {
 			currentPair = getTokenLexemePair();
 
-			cout << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-			cout << "<Primary> ::= (<Expression>)" << endl << endl;
+			outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+			outFile << "<Primary> ::= (<Expression>)" << endl << endl;
 		} else {
 			perror(") lexeme expected; Primary()");
 		}
