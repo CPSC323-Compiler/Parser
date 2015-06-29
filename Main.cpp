@@ -8,15 +8,15 @@ using namespace std;
 
 int main() {
 	//LexTokPair pair;
-	string filename = "in.txt";
+	//string filename = "in.txt";
+	string filename;
 	//ofstream outFile;
 
 	// create file to print to
 	//outFile.open("out.txt");
 
-	// Note: ADD BACK LATER
-	//cout << "Enter input file name: ";
-	//getline(cin, filename);
+	cout << "Enter input file name: ";
+	getline(cin, filename);
 
 	Parser p(filename);
 
