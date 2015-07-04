@@ -1,0 +1,17 @@
+$$
+function convert (integer fahr)
+{
+	return 5*(fahr-32)/9;
+}
+$$
+	integer low, high;
+	boolean boolvar;
+
+	if (low > high) {
+		return boolvar;
+	}
+	else {
+		return low;
+	}
+	fi
+$$

@@ -1,0 +1,9 @@
+$$
+function funcE real input)
+{
+	return input + 1
+}
+$$
+real test, var;
+funcE(test);
+$$

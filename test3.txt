@@ -1,0 +1,25 @@
+$$
+function convert (integer fahr)
+{
+	return 5*(fahr-32)/9;
+}
+
+function addOne (integer number) {
+	return number + 1;
+}
+
+$$
+	integer low, high, step;
+	boolean boolvar;
+
+	read(low, high, step);
+	while (low < high)
+		{	read (low);
+			write (convert(low));
+			low = low + step;
+		}
+	if (low > high) {
+		return boolvar;
+	}
+	fi
+$$

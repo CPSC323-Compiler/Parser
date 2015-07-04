@@ -2,9 +2,6 @@ Token: separator	Lexeme: $$
 <Rat15su> ::= $$ <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$
 
 Token: keyword	Lexeme: function
-<Rat15su> ::= $$ <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$
-
-Token: keyword	Lexeme: function
 <Function> ::= function <Identifier> (<Opt Parameters>) <Opt Declaration List> <Body>
 
 Token: identifier	Lexeme: convert
@@ -61,7 +58,7 @@ Token: separator	Lexeme: ;
 Token: separator	Lexeme: }
 <Body> ::= { <Statement List> }
 
-Token: keyword	Lexeme: integer
+Token: separator	Lexeme: $$
 <Rat15su> ::= $$ <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$
 
 Token: keyword	Lexeme: integer
@@ -76,120 +73,72 @@ Token: separator	Lexeme: ,
 Token: identifier	Lexeme: high
 <IDs> ::= <Identifier>
 
-Token: separator	Lexeme: ,
-<IDs> ::= <Identifier>, <IDs>
+Token: separator	Lexeme: ;
+<Declaration List> ::= <Declaration>; | <Declaration>; <Declaration List>
 
-Token: identifier	Lexeme: step
+Token: keyword	Lexeme: boolean
+<Qualifier> ::= boolean
+
+Token: identifier	Lexeme: boolvar
 <IDs> ::= <Identifier>
 
 Token: separator	Lexeme: ;
 <Declaration List> ::= <Declaration>; | <Declaration>; <Declaration List>
 
-Token: keyword	Lexeme: read
-<Read> ::= read(<IDs>);
+Token: keyword	Lexeme: if
+<If> ::= if (<Condition>) <Statement> fi | if (<Condition>) <Statement> else <Statement> fi
 
 Token: separator	Lexeme: (
-<Read> ::= read(<IDs>);
-
-Token: identifier	Lexeme: low
-<IDs> ::= <Identifier>
-
-Token: separator	Lexeme: ,
-<IDs> ::= <Identifier>, <IDs>
-
-Token: identifier	Lexeme: high
-<IDs> ::= <Identifier>
-
-Token: separator	Lexeme: ,
-<IDs> ::= <Identifier>, <IDs>
-
-Token: identifier	Lexeme: step
-<IDs> ::= <Identifier>
-
-Token: separator	Lexeme: )
-<Read> ::= read(<IDs>);
-
-Token: separator	Lexeme: ;
-<Read> ::= read(<IDs>);
-
-Token: keyword	Lexeme: while
-<While> ::= while(<Condition>) <Statement>
-
-Token: separator	Lexeme: (
-<While> ::= while(<Condition>) <Statement>
+<If> ::= if (<Condition>) <Statement> fi | if (<Condition>) <Statement> else <Statement> fi
 
 Token: identifier	Lexeme: low
 <Primary> ::= <Identifier>
 
-Token: operator	Lexeme: <
-<Relop> ::= <
+Token: operator	Lexeme: >
+<Relop> ::= >
 
 Token: identifier	Lexeme: high
 <Primary> ::= <Identifier>
 
 Token: separator	Lexeme: )
-<While> ::= while(<Condition>) <Statement>
+<If> ::= if (<Condition>) <Statement> fi | if (<Condition>) <Statement> else <Statement> fi
 
 Token: separator	Lexeme: {
 <Compound> ::= { <Statement List> }
 
-Token: keyword	Lexeme: write
-<Write> ::= write(<Expression>);
+Token: keyword	Lexeme: return
+<Return> ::= return <Expression>;
 
-Token: separator	Lexeme: (
-<Write> ::= write(<Expression>);
-
-Token: identifier	Lexeme: low
-<Primary> ::= <Identifier>
-
-Token: separator	Lexeme: )
-<Write> ::= write(<Expression>);
-
-Token: separator	Lexeme: ;
-<Write> ::= write(<Expression>);
-
-Token: keyword	Lexeme: write
-<Write> ::= write(<Expression>);
-
-Token: separator	Lexeme: (
-<Write> ::= write(<Expression>);
-
-Token: identifier	Lexeme: convert
-<Primary> ::= <Identifier>
-
-Token: separator	Lexeme: (
-<Primary> ::= <Identifier> (<IDs>)
-
-Token: identifier	Lexeme: low
-<IDs> ::= <Identifier>
-
-Token: separator	Lexeme: )
-<Primary> ::= <Identifier> (<IDs>)
-
-Token: separator	Lexeme: )
-<Write> ::= write(<Expression>);
-
-Token: separator	Lexeme: ;
-<Write> ::= write(<Expression>);
-
-Token: identifier	Lexeme: low
-<Assign> ::= <Identifier> = <Expression>;
-
-Token: operator	Lexeme: =
-<Assign> ::= <Identifier> = <Expression>;
-
-Token: identifier	Lexeme: low
-<Primary> ::= <Identifier>
-
-Token: operator	Lexeme: +
-<Expression Prime> ::= + <Term> <Expression Prime> | <Empty>
-
-Token: identifier	Lexeme: step
+Token: identifier	Lexeme: boolvar
 <Primary> ::= <Identifier>
 
 Token: separator	Lexeme: ;
-<Assign> ::= <Identifier> = <Expression>;
+<Return> ::= return <Expression>;
 
 Token: separator	Lexeme: }
 <Compound> ::= { <Statement List> }
+
+Token: keyword	Lexeme: else
+<If> ::= if (<Condition>) <Statement> else <Statement> fi
+
+Token: separator	Lexeme: {
+<Compound> ::= { <Statement List> }
+
+Token: keyword	Lexeme: return
+<Return> ::= return <Expression>;
+
+Token: identifier	Lexeme: low
+<Primary> ::= <Identifier>
+
+Token: separator	Lexeme: ;
+<Return> ::= return <Expression>;
+
+Token: separator	Lexeme: }
+<Compound> ::= { <Statement List> }
+
+Token: keyword	Lexeme: fi
+<If> ::= if (<Condition>) <Statement> else <Statement> fi
+
+Token: separator	Lexeme: $$
+<Rat15su> ::= $$ <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$
 
