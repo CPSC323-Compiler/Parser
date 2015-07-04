@@ -491,20 +491,26 @@ void Parser::OptParams() {
 void Parser::Params() {
 	do {
 		Param();
-	} while (currentPair.lexeme == ",");
+	} while (currentPair.lexeme == ","); //
 }
 
 void Parser::Param() {
-	Qualifier();
+	if (currentPair.lexeme == ",") {
+		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
+		outFile << "<Parameter> ::= <Identifier> <Qualifier>" << endl << endl;
+
+		currentPair = getTokenLexemePair();
+	}
 	if (currentPair.token == "identifier") {
 		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
-		outFile << "<Parameter> ::= <Qualifier> <Identifier>" << endl << endl;
+		outFile << "<Parameter> ::= <Identifier> <Qualifier>" << endl << endl;
 
 		currentPair = getTokenLexemePair();
 	} else {
 		cerr << "identifier token expected; Param()" << endl;
 		exit(0);
 	}
+	Qualifier();
 }
 
 void Parser::OptDeclList() {
@@ -587,7 +593,6 @@ void Parser::Body() {
 	}
 
 	StmtList();
-
 	if (currentPair.lexeme == "}") {
 		outFile << "Token: " << currentPair.token << "\tLexeme: " << currentPair.lexeme << endl;
 		outFile << "<Body> ::= { <Statement List> }" << endl << endl;

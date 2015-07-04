@@ -10,11 +10,29 @@ Token: identifier	Lexeme: convert
 Token: separator	Lexeme: (
 <Function> ::= function <Identifier> (<Opt Parameters>) <Opt Declaration List> <Body>
 
+Token: identifier	Lexeme: fahr
+<Parameter> ::= <Identifier> <Qualifier>
+
 Token: keyword	Lexeme: integer
 <Qualifier> ::= integer
 
-Token: identifier	Lexeme: fahr
-<Parameter> ::= <Qualifier> <Identifier>
+Token: separator	Lexeme: ,
+<Parameter> ::= <Identifier> <Qualifier>
+
+Token: identifier	Lexeme: x
+<Parameter> ::= <Identifier> <Qualifier>
+
+Token: keyword	Lexeme: real
+<Qualifier> ::= real
+
+Token: separator	Lexeme: ,
+<Parameter> ::= <Identifier> <Qualifier>
+
+Token: identifier	Lexeme: y
+<Parameter> ::= <Identifier> <Qualifier>
+
+Token: keyword	Lexeme: integer
+<Qualifier> ::= integer
 
 Token: separator	Lexeme: )
 <Function> ::= function <Identifier> (<Opt Parameters>) <Opt Declaration List> <Body>
